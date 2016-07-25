@@ -24,7 +24,7 @@
 #import "PFTaskQueue.h"
 
 #if !TARGET_OS_WATCH
-#import "PFReachability.h"
+#import "ParseReachability.h"
 #endif
 
 NSUInteger const PFEventuallyQueueDefaultMaxAttemptsCount = 5;
@@ -32,7 +32,7 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
 
 @interface PFEventuallyQueue ()
 #if !TARGET_OS_WATCH
-<PFReachabilityListener>
+<ParseReachabilityListener>
 #endif
 
 @property (atomic, assign, readwrite) BOOL monitorsReachability;
@@ -363,10 +363,10 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
     }
     self.monitorsReachability = YES;
 
-    [[PFReachability sharedParseReachability] addListener:self];
+    [[ParseReachability sharedParseReachability] addListener:self];
 
     // Set the initial connected status
-    self.connected = ([PFReachability sharedParseReachability].currentState != PFReachabilityStateNotReachable);
+    self.connected = ([ParseReachability sharedParseReachability].currentState != ParseReachabilityStateNotReachable);
 #endif
 }
 
@@ -376,7 +376,7 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
         return;
     }
 
-    [[PFReachability sharedParseReachability] removeListener:self];
+    [[ParseReachability sharedParseReachability] removeListener:self];
 
     self.monitorsReachability = NO;
     self.connected = YES;
@@ -454,9 +454,9 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
 #pragma mark - Reachability
 ///--------------------------------------
 
-- (void)reachability:(PFReachability *)reachability didChangeReachabilityState:(PFReachabilityState)state {
+- (void)reachability:(ParseReachability *)reachability didChangeReachabilityState:(ParseReachabilityState)state {
     if (self.monitorsReachability) {
-        self.connected = (state != PFReachabilityStateNotReachable);
+        self.connected = (state != ParseReachabilityStateNotReachable);
     }
 }
 

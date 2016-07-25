@@ -13,7 +13,7 @@
 
 PF_WATCH_UNAVAILABLE_WARNING
 
-@class PFReachability;
+@class ParseReachability;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,13 +23,13 @@ typedef NS_ENUM(uint8_t, PFReachabilityState) {
     PFReachabilityStateReachableViaCell,
 };
 
-@protocol PFReachabilityListener <NSObject>
+@protocol ParseReachabilityListener <NSObject>
 
-- (void)reachability:(PFReachability *)reachability didChangeReachabilityState:(PFReachabilityState)state;
+- (void)reachability:(ParseReachability *)reachability didChangeReachabilityState:(PFReachabilityState)state;
 
 @end
 
-PF_WATCH_UNAVAILABLE @interface PFReachability : NSObject
+PF_WATCH_UNAVAILABLE @interface ParseReachability : NSObject
 
 @property (nonatomic, assign, readonly) PFReachabilityState currentState;
 
@@ -48,12 +48,12 @@ PF_WATCH_UNAVAILABLE @interface PFReachability : NSObject
  Adds a weak reference to the listener,
  callbacks are executed on the main thread when status or flags change.
  */
-- (void)addListener:(id<PFReachabilityListener>)listener;
+- (void)addListener:(id<ParseReachabilityListener>)listener;
 
 /*
  Removes weak reference to the listener.
  */
-- (void)removeListener:(id<PFReachabilityListener>)listener;
+- (void)removeListener:(id<ParseReachabilityListener>)listener;
 
 /*
  Removes all references to all listener objects.

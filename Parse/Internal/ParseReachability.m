@@ -7,7 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-#import "PFReachability.h"
+#import "ParseReachability.h"
 
 #import <SystemConfiguration/SystemConfiguration.h>
 
@@ -18,7 +18,7 @@
 #import "PFWeakValue.h"
 #import "Parse_Private.h"
 
-@interface PFReachability () {
+@interface ParseReachability () {
     dispatch_queue_t _synchronizationQueue;
     NSMutableArray *_listenersArray;
 
@@ -31,11 +31,11 @@
 
 static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReachabilityFlags flags, void *info) {
     NSCAssert(info != NULL, @"info was NULL in ReachabilityCallback");
-    PFReachability *reachability = (__bridge PFReachability *)info;
+    ParseReachability *reachability = (__bridge ParseReachability *)info;
     reachability.flags = flags;
 }
 
-@implementation PFReachability
+@implementation ParseReachability
 
 @synthesize flags = _flags;
 
@@ -96,7 +96,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
 }
 
 + (instancetype)sharedParseReachability {
-    static PFReachability *reachability;
+    static ParseReachability *reachability;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSURL *url = [NSURL URLWithString:[Parse _currentManager].configuration.server];
@@ -122,14 +122,14 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
 #pragma mark - Listeners
 ///--------------------------------------
 
-- (void)addListener:(id<PFReachabilityListener>)listener {
+- (void)addListener:(id<ParseReachabilityListener>)listener {
     PFWeakValue *value = [PFWeakValue valueWithWeakObject:listener];
     dispatch_barrier_sync(_synchronizationQueue, ^{
         [_listenersArray addObject:value];
     });
 }
 
-- (void)removeListener:(id<PFReachabilityListener>)listener {
+- (void)removeListener:(id<ParseReachabilityListener>)listener {
     dispatch_barrier_sync(_synchronizationQueue, ^{
         [_listenersArray filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
             id weakObject = [evaluatedObject weakObject];
