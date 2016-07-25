@@ -17,21 +17,21 @@ PF_WATCH_UNAVAILABLE_WARNING
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(uint8_t, PFReachabilityState) {
-    PFReachabilityStateNotReachable,
-    PFReachabilityStateReachableViaWiFi,
-    PFReachabilityStateReachableViaCell,
+typedef NS_ENUM(uint8_t, ParseReachabilityState) {
+    ParseReachabilityStateNotReachable,
+    ParseReachabilityStateReachableViaWiFi,
+    ParseReachabilityStateReachableViaCell,
 };
 
 @protocol ParseReachabilityListener <NSObject>
 
-- (void)reachability:(ParseReachability *)reachability didChangeReachabilityState:(PFReachabilityState)state;
+- (void)reachability:(ParseReachability *)reachability didChangeReachabilityState:(ParseReachabilityState)state;
 
 @end
 
 PF_WATCH_UNAVAILABLE @interface ParseReachability : NSObject
 
-@property (nonatomic, assign, readonly) PFReachabilityState currentState;
+@property (nonatomic, assign, readonly) ParseReachabilityState currentState;
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

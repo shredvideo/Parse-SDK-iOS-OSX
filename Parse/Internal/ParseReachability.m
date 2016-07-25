@@ -44,7 +44,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
 ///--------------------------------------
 
 + (BOOL)_reachabilityStateForFlags:(SCNetworkConnectionFlags)flags {
-    PFReachabilityState reachabilityState = PFReachabilityStateNotReachable;
+    ParseReachabilityState reachabilityState = ParseReachabilityStateNotReachable;
 
     if ((flags & kSCNetworkReachabilityFlagsReachable) == 0) {
         // if target host is not reachable
@@ -54,7 +54,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
     if ((flags & kSCNetworkReachabilityFlagsConnectionRequired) == 0) {
         // if target host is reachable and no connection is required
         //  then we'll assume (for now) that your on Wi-Fi
-        reachabilityState = PFReachabilityStateReachableViaWiFi;
+        reachabilityState = ParseReachabilityStateReachableViaWiFi;
     }
     if ((((flags & kSCNetworkReachabilityFlagsConnectionOnDemand ) != 0) ||
          (flags & kSCNetworkReachabilityFlagsConnectionOnTraffic) != 0)) {
@@ -62,7 +62,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
         //     calling application is using the CFSocketStream or higher APIs
         if ((flags & kSCNetworkReachabilityFlagsInterventionRequired) == 0) {
             // ... and no [user] intervention is needed
-            reachabilityState = PFReachabilityStateReachableViaWiFi;
+            reachabilityState = ParseReachabilityStateReachableViaWiFi;
         }
     }
 
@@ -73,7 +73,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
         //     is using the CFNetwork (CFSocketStream?) APIs.
         // ... and a network connection is not required (kSCNetworkReachabilityFlagsConnectionRequired)
         //     which could be et w/connection flag (e.g. IsWWAN) indicating type of connection required.
-        reachabilityState = PFReachabilityStateReachableViaCell;
+        reachabilityState = ParseReachabilityStateReachableViaCell;
     }
 #endif
 
@@ -148,7 +148,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
     @weakify(self);
     dispatch_async(_synchronizationQueue, ^{
         @strongify(self);
-        PFReachabilityState state = [[self class] _reachabilityStateForFlags:_flags];
+        ParseReachabilityState state = [[self class] _reachabilityStateForFlags:_flags];
         for (PFWeakValue *value in _listenersArray) {
             [value.weakObject reachability:self didChangeReachabilityState:state];
         }
@@ -178,7 +178,7 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
     return flags;
 }
 
-- (PFReachabilityState)currentState {
+- (ParseReachabilityState)currentState {
     return [[self class] _reachabilityStateForFlags:self.flags];
 }
 
