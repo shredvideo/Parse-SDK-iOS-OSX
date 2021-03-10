@@ -4,6 +4,7 @@
 ## Build generated
 build/
 DerivedData
+OCMock.framework
 
 ## Various settings
 *.pbxuser
@@ -29,6 +30,11 @@ xcuserdata
 ## Dependency Managers
 Pods/
 Carthage/Build
+Carthage/Checkouts
+docs/
+./Bolts
 
 ## AppCode
 .idea/
+ParseFacebookUtils/Vendor
+ParseUI/Vendor

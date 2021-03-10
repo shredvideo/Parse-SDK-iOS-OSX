@@ -16,7 +16,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     @IBOutlet weak var window: NSWindow?
 
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // ****************************************************************************
         // Initialize Parse SDK
         // ****************************************************************************
@@ -32,44 +32,43 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
             // Enable storing and querying data from Local Datastore.
             // Remove this line if you don't want to use Local Datastore features or want to use cachePolicy.
-            $0.localDatastoreEnabled = true
+            $0.isLocalDatastoreEnabled = true
         }
-        Parse.initializeWithConfiguration(configuration)
+        Parse.initialize(with: configuration)
 
         PFUser.enableAutomaticUser()
 
         let defaultACL: PFACL = PFACL()
         // If you would like all objects to be private by default, remove this line.
-        defaultACL.publicReadAccess = true
+        defaultACL.hasPublicReadAccess = true
 
-        PFACL.setDefaultACL(defaultACL, withAccessForCurrentUser: true)
+        PFACL.setDefault(defaultACL, withAccessForCurrentUser: true)
 
         // ****************************************************************************
         // Uncomment these lines to register for Push Notifications.
         //
-        // let types: NSRemoteNotificationType = [.Alert, .Badge, .Sound]
-        // NSApplication.sharedApplication().registerForRemoteNotificationTypes(types)
+        // let types: NSRemoteNotificationType = [.alert, .badge, .sound]
+        // NSApplication.shared().registerForRemoteNotifications(matching: types)
         //
         // ****************************************************************************
 
-        PFAnalytics.trackAppOpenedWithLaunchOptions(nil)
+        PFAnalytics.trackAppOpened(launchOptions: nil)
     }
 
-    func application(application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
-        let installation = PFInstallation.currentInstallation()
-        installation?.setDeviceTokenFromData(deviceToken)
+    func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let installation = PFInstallation.current()
+        installation?.setDeviceTokenFrom(deviceToken)
         installation?.saveInBackground()
-
-        PFPush.subscribeToChannelInBackground("") { (succeeded: Bool, error: NSError?) in
+        PFPush.subscribeToChannel(inBackground: "") { (succeeded: Bool, error: Error?) in
             if succeeded {
                 print("ParseStarterProject successfully subscribed to push notifications on the broadcast channel.\n")
             } else {
-                print("ParseStarterProject failed to subscribe to push notifications on the broadcast channel with error = %@.\n", error)
+                print("ParseStarterProject failed to subscribe to push notifications on the broadcast channel with error = %@.\n", error as Any)
             }
         }
     }
 
-    func application(application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("application:didFailToRegisterForRemoteNotificationsWithError: %@\n", error)
     }
 
@@ -77,6 +76,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Uncomment these lines to track Push Notifications open rate in Analytics.
     //
     // func application(application: NSApplication, didReceiveRemoteNotification userInfo: [String : AnyObject]) {
-    //   PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
+    //   PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
     // }
 }
