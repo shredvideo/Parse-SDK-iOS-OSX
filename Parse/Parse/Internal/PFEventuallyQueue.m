@@ -24,7 +24,7 @@
 #import "PFTaskQueue.h"
 
 #if !TARGET_OS_WATCH
-#import "ParseReachability.h"
+#import "PFReachability.h"
 #endif
 
 NSUInteger const PFEventuallyQueueDefaultMaxAttemptsCount = 5;
