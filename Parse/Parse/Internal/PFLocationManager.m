@@ -119,8 +119,6 @@
         if (self.application.applicationState != UIApplicationStateBackground &&
             [self.bundle objectForInfoDictionaryKey:@"NSLocationWhenInUseUsageDescription"] != nil) {
             [self.locationManager requestWhenInUseAuthorization];
-        } else {
-            [self.locationManager requestAlwaysAuthorization];
         }
     };
     if ([NSThread currentThread].isMainThread) {
