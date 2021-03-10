@@ -129,12 +129,8 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
     });
 }
 
-<<<<<<< HEAD:Parse/Parse/ParseReachability.m
-- (void)removeListener:(id<ParseReachabilityListener>)listener {
-=======
 - (void)removeListener:(id<PFReachabilityListener>)listener {
     @weakify(listener);
->>>>>>> upstream/master:Parse/Parse/Internal/PFReachability.m
     dispatch_barrier_sync(_synchronizationQueue, ^{
         @strongify(listener);
         [self->_listenersArray filterUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
@@ -154,13 +150,8 @@ static void _reachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReac
     @weakify(self);
     dispatch_async(_synchronizationQueue, ^{
         @strongify(self);
-<<<<<<< HEAD:Parse/Parse/ParseReachability.m
-        ParseReachabilityState state = [[self class] _reachabilityStateForFlags:_flags];
-        for (PFWeakValue *value in _listenersArray) {
-=======
         PFReachabilityState state = [[self class] _reachabilityStateForFlags:self->_flags];
         for (PFWeakValue *value in self->_listenersArray) {
->>>>>>> upstream/master:Parse/Parse/Internal/PFReachability.m
             [value.weakObject reachability:self didChangeReachabilityState:state];
         }
 
